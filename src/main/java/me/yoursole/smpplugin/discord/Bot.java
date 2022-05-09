@@ -12,6 +12,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.Compression;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
+import org.bukkit.entity.Player;
 
 import javax.security.auth.login.LoginException;
 import java.awt.*;
@@ -45,6 +46,28 @@ public class Bot {
         embedBuilder.setImage("https://crafatar.com/avatars/"+uuid+"?overlay"); //doesn't work
         embedBuilder.setColor(Color.YELLOW);
         embedBuilder.addField(playerName, message,true);
+
+        TextChannel textChannel = jda.getTextChannelById(t);
+        if (textChannel != null) {
+            textChannel.sendMessage(embedBuilder.build()).queue();
+        }
+    }
+
+    public static void sendJoinMessage(Player p){
+        EmbedBuilder embedBuilder = new EmbedBuilder();
+        embedBuilder.setColor(p.isOp()?Color.CYAN:Color.YELLOW);
+        embedBuilder.addField(p.getDisplayName() + " joined the game!","",true);
+
+        TextChannel textChannel = jda.getTextChannelById(t);
+        if (textChannel != null) {
+            textChannel.sendMessage(embedBuilder.build()).queue();
+        }
+    }
+
+    public static void sendLeaveMessage(Player p){
+        EmbedBuilder embedBuilder = new EmbedBuilder();
+        embedBuilder.setColor(p.isOp()?Color.CYAN:Color.YELLOW);
+        embedBuilder.addField(p.getDisplayName() + " left the game.","",true);
 
         TextChannel textChannel = jda.getTextChannelById(t);
         if (textChannel != null) {

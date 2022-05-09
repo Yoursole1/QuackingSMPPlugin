@@ -8,6 +8,7 @@ import me.yoursole.smpplugin.data.BotData;
 import me.yoursole.smpplugin.data.DataManager;
 import me.yoursole.smpplugin.data.PluginData;
 import me.yoursole.smpplugin.discord.Bot;
+import me.yoursole.smpplugin.events.BlockBreak;
 import me.yoursole.smpplugin.events.ChatEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -74,6 +75,7 @@ public final class SMPPlugin extends JavaPlugin {
 
     private static void setupPlugin(JavaPlugin p){
         p.getServer().getPluginManager().registerEvents(new ChatEvent(), p);
+        p.getServer().getPluginManager().registerEvents(new BlockBreak(), p);
     }
 
     @Override
