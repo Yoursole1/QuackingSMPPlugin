@@ -1,14 +1,11 @@
 package me.yoursole.smpplugin.data;
 
-import me.yoursole.smpplugin.discord.Bot;
-import net.dv8tion.jda.api.entities.User;
-
 import java.io.*;
 import java.util.Base64;
 import java.util.HashMap;
 
 public class BotData implements Serializable {
-    private HashMap<String,String> discordIDtoMinecraftUUID;
+    private final HashMap<String,String> discordIDtoMinecraftUUID;
 
 
     public BotData(){

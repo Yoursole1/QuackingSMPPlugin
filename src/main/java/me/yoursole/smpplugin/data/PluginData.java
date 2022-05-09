@@ -1,14 +1,12 @@
 package me.yoursole.smpplugin.data;
 
-import org.bukkit.Material;
-
 import java.io.*;
 import java.util.Base64;
 import java.util.HashMap;
 
 public class PluginData implements Serializable {
-    private HashMap<String, Integer> blocksBroken;
-    private HashMap<String, Integer> playtimeSec;
+    private final HashMap<String, Integer> blocksBroken;
+    private final HashMap<String, Integer> playtimeSec;
     public PluginData(){
         this.blocksBroken = new HashMap<>();
         this.playtimeSec = new HashMap<>();

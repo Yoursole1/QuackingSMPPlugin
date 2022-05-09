@@ -2,7 +2,6 @@ package me.yoursole.smpplugin.discord;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import jdk.jpackage.internal.Log;
 import me.yoursole.smpplugin.config.ConfigManager;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
@@ -20,7 +19,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
-import java.util.logging.Logger;
 
 public class Bot {
     private static JDABuilder builder;

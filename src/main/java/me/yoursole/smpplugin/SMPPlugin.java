@@ -1,6 +1,5 @@
 package me.yoursole.smpplugin;
 
-import jdk.jpackage.internal.Log;
 import me.yoursole.smpplugin.config.BotDataManager;
 import me.yoursole.smpplugin.config.ConfigManager;
 import me.yoursole.smpplugin.config.PluginDataManager;
@@ -15,7 +14,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import javax.security.auth.login.LoginException;
 import java.io.IOException;
-import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
