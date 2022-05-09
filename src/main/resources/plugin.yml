@@ -1,0 +1,4 @@
+name: SMPPlugin
+version: '${project.version}'
+main: me.yoursole.smpplugin.SMPPlugin
+api-version: 1.18
