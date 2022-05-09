@@ -3,6 +3,7 @@ package me.yoursole.smpplugin.discord;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import jdk.jpackage.internal.Log;
+import me.yoursole.smpplugin.config.ConfigManager;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -23,9 +24,11 @@ import java.util.logging.Logger;
 public class Bot {
     private static JDABuilder builder;
     private static JDA jda;
-    public static String t = "855555552684015636";
+    public static String t;
 
     public static void bringOnline(String token) throws LoginException {
+        t = ConfigManager.get().getString("Bot_Channel");
+
         builder = JDABuilder.createDefault(token);
         builder.disableCache(CacheFlag.MEMBER_OVERRIDES, CacheFlag.VOICE_STATE);
         builder.setBulkDeleteSplittingEnabled(false);
@@ -46,8 +49,6 @@ public class Bot {
         TextChannel textChannel = jda.getTextChannelById(t);
         if (textChannel != null) {
             textChannel.sendMessage(embedBuilder.build()).queue();
-        }else{
-
         }
     }
 
