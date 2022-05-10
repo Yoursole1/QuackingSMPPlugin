@@ -15,6 +15,6 @@ public class PlayerJoin implements Listener {
         Bot.sendJoinMessage(p);
 
         ChatColor c = p.isOp()?ChatColor.AQUA:ChatColor.YELLOW;
-        e.setJoinMessage(c + p.getDisplayName() + " left the game.");
+        e.setJoinMessage(c + p.getDisplayName() + " joined the game.");
     }
 }

@@ -9,6 +9,8 @@ import me.yoursole.smpplugin.data.PluginData;
 import me.yoursole.smpplugin.discord.Bot;
 import me.yoursole.smpplugin.events.BlockBreak;
 import me.yoursole.smpplugin.events.ChatEvent;
+import me.yoursole.smpplugin.events.PlayerJoin;
+import me.yoursole.smpplugin.events.PlayerLeave;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -37,10 +39,11 @@ public final class SMPPlugin extends JavaPlugin {
     private static void loadData() throws IOException, ClassNotFoundException {
         if(BotDataManager.get().getString("Bot_Data") == null){
             DataManager.botData = new BotData();
-            return;
+        }else{
+            DataManager.botData = new BotData(BotDataManager.get().getString("Bot_Data"));
         }
 
-        DataManager.botData = new BotData(BotDataManager.get().getString("Bot_Data"));
+
 
         if(PluginDataManager.get().getString("Plugin_Data") == null){
             DataManager.pluginData = new PluginData();
@@ -74,6 +77,8 @@ public final class SMPPlugin extends JavaPlugin {
     private static void setupPlugin(JavaPlugin p){
         p.getServer().getPluginManager().registerEvents(new ChatEvent(), p);
         p.getServer().getPluginManager().registerEvents(new BlockBreak(), p);
+        p.getServer().getPluginManager().registerEvents(new PlayerJoin(), p);
+        p.getServer().getPluginManager().registerEvents(new PlayerLeave(), p);
     }
 
     @Override

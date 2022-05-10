@@ -15,6 +15,7 @@ import org.bukkit.entity.Player;
 
 import javax.security.auth.login.LoginException;
 import java.awt.*;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.NoSuchElementException;
@@ -41,10 +42,20 @@ public class Bot {
     public static void sendMessage(String message, String playerName) throws IOException {
         String uuid = getUUID(playerName);
         EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setImage("https://crafatar.com/avatars/"+uuid+"?overlay"); //doesn't work
+        embedBuilder.setThumbnail("https://crafatar.com/avatars/"+uuid+"?overlay");
         embedBuilder.setColor(Color.YELLOW);
         embedBuilder.addField(playerName, message,true);
 
+        TextChannel textChannel = jda.getTextChannelById(t);
+        if (textChannel != null) {
+            textChannel.sendMessage(embedBuilder.build()).queue();
+        }
+    }
+
+    public static void sendURL(String url){
+        EmbedBuilder embedBuilder = new EmbedBuilder();
+        embedBuilder.setColor(Color.YELLOW);
+        embedBuilder.setImage(url);
         TextChannel textChannel = jda.getTextChannelById(t);
         if (textChannel != null) {
             textChannel.sendMessage(embedBuilder.build()).queue();
@@ -81,7 +92,7 @@ public class Bot {
             JsonObject JsonFile = (JsonObject) JsonParser.parseString(UUIDJson);
             String uuid = JsonFile.get("id").toString();
             return uuid.replace("\"","");
-        }catch(NoSuchElementException e){
+        }catch(NoSuchElementException | FileNotFoundException e){
             return null;
         }
     }
