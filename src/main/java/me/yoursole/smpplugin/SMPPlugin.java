@@ -22,7 +22,7 @@ import java.util.logging.LogRecord;
 public final class SMPPlugin extends JavaPlugin {
     //add transfer item command in discord
     //add link minecraft account in discord
-    //add command to view graph of blocks broken
+
     @Override
     public void onEnable() {
         setupDataManagers();
