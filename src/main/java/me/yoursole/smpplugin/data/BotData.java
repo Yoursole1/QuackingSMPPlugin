@@ -3,6 +3,7 @@ package me.yoursole.smpplugin.data;
 import java.io.*;
 import java.util.Base64;
 import java.util.HashMap;
+import java.util.Map;
 
 public class BotData implements Serializable {
     private final HashMap<String,String> discordIDtoMinecraftUUID;
@@ -20,8 +21,19 @@ public class BotData implements Serializable {
         this.discordIDtoMinecraftUUID.put(discord, minecraftUUID);
     }
 
+    public void removeEntry(String discord){
+        this.discordIDtoMinecraftUUID.remove(discord);
+    }
+
     public String getMinecraft(String discord){
         return this.discordIDtoMinecraftUUID.get(discord);
+    }
+    public String getDiscord(String uuid){
+        for(Map.Entry<String, String> entry : this.discordIDtoMinecraftUUID.entrySet()){
+            if(entry.getValue().equalsIgnoreCase(uuid))
+                return entry.getKey();
+        }
+        return null;
     }
 
     public HashMap<String, String> getDiscordIDtoMinecraftUUID(){
