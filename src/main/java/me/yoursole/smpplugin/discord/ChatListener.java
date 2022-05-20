@@ -3,13 +3,17 @@ package me.yoursole.smpplugin.discord;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import io.quickchart.QuickChart;
+import me.yoursole.smpplugin.SMPPlugin;
 import me.yoursole.smpplugin.data.DataManager;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.hypixel.api.HypixelAPI;
+import org.bukkit.BanList;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
 
 import java.io.IOException;
 import java.util.*;
@@ -51,10 +55,103 @@ public class ChatListener extends ListenerAdapter {
                 executeUnlink(user, words);
                 break;
             }
+            case "?stop":{
+                if (checkShutdown(user)) break;
+                Bot.sendMessage("Server is shutting down","");
+
+                break;
+            }
+            case "?restart":{
+                if (checkShutdown(user)) break;
+                Bot.sendMessage("Server is restarting","");
+
+                break;
+            }
+            case "?reload":{
+                if (checkPermission(user)) break;
+                Bot.sendMessage("Server is reloading", "");
+                Bukkit.getServer().reload();
+                break;
+
+            }
+            case "?kick":{
+                if (words.length <= 1) break;
+                if (checkPermission(user)) break;
+
+                Player p = Bukkit.getPlayer(words[1]);
+                if(p == null) {
+                    Bot.sendMessage("Invalid Player","");
+                    break;
+                }
+
+                Bukkit.getScheduler().runTask(SMPPlugin.getPlugin(),
+                        () -> p.kickPlayer("You were kicked by the discord bot how unfortunate"));
+                Bot.sendMessage("You successfully kicked "+p.getDisplayName(), "");
+                break;
+
+            }
+            case "?ban":{
+                if (words.length <= 1) break;
+                if (checkPermission(user)) break;
+
+                Player p = Bukkit.getPlayer(words[1]);
+                if(p == null) {
+                    OfflinePlayer p2 = Bukkit.getOfflinePlayer(words[1]);
+                    Bukkit.getBanList(BanList.Type.NAME).addBan(Objects.requireNonNull(p2.getName()), "You were banned by the discord bot how unfortunate",getFutureDate(999999999),"Discord Bot");
+                    Bot.sendMessage("You successfully banned "+p2.getName(), "");
+                    break;
+                }
+
+
+                Bukkit.getBanList(BanList.Type.NAME).addBan(p.getName(), "You were banned by the discord bot how unfortunate", getFutureDate(999999999),"Discord Bot");
+                Bukkit.getScheduler().runTask(SMPPlugin.getPlugin(),
+                        () -> p.kickPlayer("You were kicked by the discord bot how unfortunate"));
+                Bot.sendMessage("You successfully banned "+p.getDisplayName(), "");
+                break;
+            }
             case "?help":{
 
             }
         }
+    }
+
+    public static Date getFutureDate(int days) {
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DATE, days);
+        return cal.getTime();
+    }
+
+    private boolean checkPermission(User user) throws IOException {
+        return check(user);
+    }
+
+    private boolean checkShutdown(User user) throws IOException {
+        if (check(user)) return true;
+        Bukkit.getServer().shutdown();
+        return false;
+    }
+
+    private boolean check(User user) throws IOException {
+        String uuid = DataManager.botData.getMinecraft(user.getAsTag());
+        if(uuid == null) {
+            Bot.sendMessage("Please link your account to perform this action", "");
+            return true;
+        }
+
+        if(!Bukkit.getOfflinePlayer(UUID.fromString(insertDashes(uuid))).isOp()) {
+            Bot.sendMessage("You do not have permission to perform this action", "");
+            return true;
+        }
+        return false;
+    }
+
+    private String insertDashes(String uuid){
+        StringBuilder sb = new StringBuilder(uuid);
+        sb.insert(8, "-");
+        sb.insert(13, "-");
+        sb.insert(18, "-");
+        sb.insert(23, "-");
+        return sb.toString();
     }
 
     private void executeUnlink(User user, String[] words) throws IOException {

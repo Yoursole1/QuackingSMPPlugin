@@ -22,9 +22,10 @@ import java.util.logging.LogRecord;
 public final class SMPPlugin extends JavaPlugin {
     //add transfer item command in discord
     //add link minecraft account in discord
-
+    private static JavaPlugin p;
     @Override
     public void onEnable() {
+        p = this;
         setupDataManagers();
         setupBot();
         setupPlugin(this);
@@ -34,6 +35,9 @@ public final class SMPPlugin extends JavaPlugin {
             Bukkit.getLogger().log(new LogRecord(Level.SEVERE, "Bot or Plugin Data Failed to load -- EXITING"));
             System.exit(-1);
         }
+    }
+    public static JavaPlugin getPlugin(){
+        return p;
     }
 
     private static void loadData() throws IOException, ClassNotFoundException {
